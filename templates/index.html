@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Word Learning Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Word Learning Assistant</h1>
+        <form method="post" class="form-box">
+            <input type="text" name="word" placeholder="Type a word in English..." required>
+            <button type="submit">Learn</button>
+        </form>
+
+        {% if result %}
+        <div class="result-box">
+            <h2>{{ word | capitalize }}</h2>
+            <p>{{ result }}</p>
+        </div>
+        {% endif %}
+
+        {% if pronunciation %}
+        <div class="audio-box">
+            <h3>🔊 Pronunciation</h3>
+            <audio controls>
+                <source src="{{ pronunciation }}" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        {% endif %}
+
+        {% if image_url %}
+        <div class="image-box">
+            <h3>🖼️ Visual Representation</h3>
+            <img src="{{ image_url }}" alt="Image of {{ word }}">
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

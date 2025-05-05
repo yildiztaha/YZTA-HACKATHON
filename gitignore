@@ -1,0 +1,23 @@
+# Python bytecode
+__pycache__/
+
+# Virtual environment
+.venv/
+
+# PyCharm project files
+.idea/
+
+# VS Code project files
+.vscode/
+
+# Flask specific
+instance/
+
+# VS Code specific
+.history/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Pytest
+*.pytest_cache/
