@@ -21,3 +21,6 @@ instance/
 
 # Pytest
 *.pytest_cache/
+
+# env
+.env

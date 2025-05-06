@@ -1,5 +1,6 @@
 import requests
 import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -7,16 +8,19 @@ from fastapi.templating import Jinja2Templates
 from transformers import pipeline
 from gtts import gTTS
 
+# .env dosyasını yükle
+load_dotenv()
+
+# FastAPI uygulaması başlatma
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# Unsplash API Key
-UNSPLASH_API_KEY = "yl_fvFXsm8a40Uqw3eEsU7AYl96ao7pHqr8dDpWkjZQ"  # Unsplash API anahtarınızı buraya ekleyin
+# Unsplash API Key'ini .env dosyasından al
+UNSPLASH_API_KEY = os.getenv("UNSPLASH_API_KEY")
 
-# Daha büyük model
+# Flan t5 base model
 generator = pipeline("text2text-generation", model="google/flan-t5-base")
-
 
 # Sesli telaffuz için gTTS fonksiyonu
 def create_pronunciation(word: str):
@@ -29,7 +33,6 @@ def create_pronunciation(word: str):
     tts.save(filename)
     return "/" + filename  # Tarayıcıdan erişilebilir yol
 
-
 # Unsplash API ile resim çekme fonksiyonu
 def fetch_image(word: str):
     url = f"https://api.unsplash.com/photos/random?query={word}&client_id={UNSPLASH_API_KEY}"
@@ -37,7 +40,7 @@ def fetch_image(word: str):
 
     if response.status_code == 200:
         data = response.json()
-        return data['urls']['regular']
+        return data[0]['urls']['regular']  # Görsel URL'sini döndürüyoruz
     return None
 
 
@@ -70,5 +73,5 @@ async def explain_word(request: Request, word: str = Form(...)):
         "result": result,
         "word": word_cleaned,
         "pronunciation": pronunciation_path,
-        "image_url": image_url  # Görseli HTML'ye ekleyeceğiz
+        "image_url": image_url  # Görseli HTML'ye ekle
     })
