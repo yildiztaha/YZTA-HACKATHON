@@ -40,7 +40,7 @@ def fetch_image(word: str):
 
     if response.status_code == 200:
         data = response.json()
-        return data[0]['urls']['regular']  # Görsel URL'sini döndürüyoruz
+        return data['urls']['regular']  # Görsel URL'sini döndürüyoruz
     return None
 
 
